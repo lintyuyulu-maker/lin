@@ -1,0 +1,10 @@
+{
+  "name": "AI Butler",
+  "description": "A professional, rigorous AI assistant for time management, smart scheduling, and precision timing.",
+  "permissions": [
+    "notifications"
+  ],
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
