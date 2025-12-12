@@ -19,13 +19,11 @@
 <body>
 
 <div class="box">
-    <h2>🤖 AI 助手</h2>
+    <h2>🤖 AI 助手 (修复版)</h2>
     
-    <!-- 这里输入 API Key -->
     <label style="font-size:12px; color:#666;">第一步：输入 API Key</label>
-    <input type="password" id="apiKey" placeholder="粘贴你的 Google API Key (AI Studio获取)">
+    <input type="password" id="apiKey" placeholder="粘贴你的 Google API Key">
 
-    <!-- 这里输入问题 -->
     <label style="font-size:12px; color:#666;">第二步：输入你的问题</label>
     <textarea id="prompt" placeholder="你想问什么？"></textarea>
 
@@ -35,7 +33,6 @@
     <div id="output"></div>
 </div>
 
-<!-- 引入 Google AI 的工具包 -->
 <script type="importmap">
   {
     "imports": {
@@ -47,40 +44,31 @@
 <script type="module">
   import { GoogleGenerativeAI } from "@google/generative-ai";
 
-  // 把函数挂载到 window 对象上，这样 HTML 里的 onclick 才能调用
   window.askGemini = async function() {
     const key = document.getElementById('apiKey').value;
     const promptText = document.getElementById('prompt').value;
     const outputDiv = document.getElementById('output');
     const loadingDiv = document.getElementById('loading');
 
-    if (!key) {
-      alert("请先输入 API Key！");
-      return;
-    }
-    if (!promptText) {
-      alert("请先输入问题！");
-      return;
-    }
+    if (!key) { alert("请先输入 API Key！"); return; }
+    if (!promptText) { alert("请先输入问题！"); return; }
 
-    // 显示加载中
     loadingDiv.style.display = 'block';
     outputDiv.innerText = '';
 
     try {
-      // 连接 Google AI
       const genAI = new GoogleGenerativeAI(key);
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+      // 修改点：加上了 -001 后缀，或者是用更稳定的 gemini-pro
+      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
 
-      // 发送请求
       const result = await model.generateContent(promptText);
       const response = await result.response;
       const text = response.text();
-
-      // 显示结果
+      
       outputDiv.innerText = text;
     } catch (error) {
       outputDiv.innerText = "出错了：" + error.message;
+      console.error(error);
     } finally {
       loadingDiv.style.display = 'none';
     }
