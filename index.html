@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的 AI 助手</title>
+    <title>AI 助手 (最终版)</title>
     <style>
         body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f0f2f5; }
         .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
@@ -19,7 +19,7 @@
 <body>
 
 <div class="box">
-    <h2>🤖 AI 助手 (修复版)</h2>
+    <h2>🤖 AI 助手 (Gemini Pro)</h2>
     
     <label style="font-size:12px; color:#666;">第一步：输入 API Key</label>
     <input type="password" id="apiKey" placeholder="粘贴你的 Google API Key">
@@ -58,8 +58,8 @@
 
     try {
       const genAI = new GoogleGenerativeAI(key);
-      // 修改点：加上了 -001 后缀，或者是用更稳定的 gemini-pro
-      const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash-001" });
+      // 修改点：换成了最稳定的 gemini-pro
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
 
       const result = await model.generateContent(promptText);
       const response = await result.response;
