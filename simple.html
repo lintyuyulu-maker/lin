@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 助手 - 简单版</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f0f2f5; }
+        .box { background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 20px; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #2196F3; padding: 15px; margin-bottom: 20px; border-radius: 4px; }
+        h2 { text-align: center; color: #333; margin-top: 0; }
+        h3 { color: #2196F3; margin-top: 0; font-size: 16px; }
+        textarea { width: 100%; height: 100px; margin-top: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;}
+        input { width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box;}
+        button { width: 100%; padding: 12px; background-color: #007bff; color: white; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; margin-top: 10px;}
+        button:hover { background-color: #0056b3; }
+        #output { margin-top: 20px; white-space: pre-wrap; line-height: 1.6; color: #333; }
+        .loading { color: #888; text-align: center; display: none; }
+        .step { font-size: 12px; color: #666; margin-bottom: 5px; font-weight: bold; }
+        a { color: #2196F3; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="info-box">
+    <h3>📌 使用说明</h3>
+    <p style="margin: 5px 0; font-size: 14px;">这是一个<strong>简化版</strong>的 AI 助手，可以直接在浏览器中打开使用（无需安装任何软件）。</p>
+    <p style="margin: 5px 0; font-size: 14px;">💡 如果您是开发者，想要使用完整版的 AI Butler 应用（包含时间管理、日程安排等功能），请在 GitHub 仓库查看 README.md 了解如何运行开发版本。</p>
+    <p style="margin: 5px 0; font-size: 12px; color: #d32f2f;">⚠️ <strong>安全提示</strong>：请勿在共享电脑上使用，或使用后关闭此页面。API Key 会暂存在浏览器内存中。</p>
+</div>
+
+<div class="box">
+    <h2>🤖 AI 助手 (Gemini Pro)</h2>
+    
+    <div class="step">第一步：输入 API Key</div>
+    <input type="password" id="apiKey" placeholder="粘贴你的 Google API Key">
+    <p style="font-size: 11px; color: #888; margin: 5px 0;">
+        从这里获取免费的 API Key: <a href="https://aistudio.google.com/app/apikey" target="_blank">https://aistudio.google.com/app/apikey</a>
+    </p>
+
+    <div class="step">第二步：输入你的问题</div>
+    <textarea id="prompt" placeholder="你想问什么？"></textarea>
+
+    <button onclick="askGemini()">发送给 AI</button>
+
+    <div id="loading" class="loading">正在思考中...</div>
+    <div id="output"></div>
+</div>
+
+<script type="importmap">
+  {
+    "imports": {
+      "@google/generative-ai": "https://esm.run/@google/generative-ai"
+    }
+  }
+</script>
+
+<script type="module">
+  import { GoogleGenerativeAI } from "@google/generative-ai";
+
+  window.askGemini = async function() {
+    const key = document.getElementById('apiKey').value;
+    const promptText = document.getElementById('prompt').value;
+    const outputDiv = document.getElementById('output');
+    const loadingDiv = document.getElementById('loading');
+
+    if (!key) { alert("请先输入 API Key！"); return; }
+    if (!promptText) { alert("请先输入问题！"); return; }
+
+    loadingDiv.style.display = 'block';
+    outputDiv.innerText = '';
+
+    try {
+      const genAI = new GoogleGenerativeAI(key);
+      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+
+      const result = await model.generateContent(promptText);
+      const response = await result.response;
+      const text = response.text();
+      
+      outputDiv.innerText = text;
+    } catch (error) {
+      outputDiv.innerText = "出错了：" + error.message;
+      console.error(error);
+    } finally {
+      loadingDiv.style.display = 'none';
+    }
+  }
+</script>
+
+</body>
+</html>
