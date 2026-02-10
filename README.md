@@ -35,17 +35,32 @@
    npm run dev
    ```
    
-   应用将在 http://localhost:3000 打开
+   服务器启动后，你会看到类似这样的输出：
+   ```
+   VITE v6.4.1  ready in 218 ms
+   
+   ➜  Local:   http://localhost:3000/
+   ```
 
 4. **在浏览器中访问**
    
-   打开浏览器，访问 http://localhost:3000
+   ⚠️ **重要**：请访问 **http://localhost:3000/** （不是 8080 端口，也不要在后面加 `/index.html`）
+   
+   在浏览器地址栏输入：`http://localhost:3000/` 或 `http://localhost:3000`
 
 ## 常见问题
 
 ### 为什么不能直接用浏览器打开 index.html？
 
 这是一个 React 应用，需要通过开发服务器运行。请按照上面的步骤使用 `npm run dev` 启动应用。
+
+### 访问 http://localhost:8080 或其他端口打不开？
+
+正确的端口是 **3000**，不是 8080 或其他端口。请确保：
+1. 使用 `npm run dev` 启动服务器
+2. 在浏览器中访问 **http://localhost:3000/**（不要加 `/index.html`）
+
+如果 3000 端口被占用，Vite 会自动使用其他端口，请查看终端输出的实际端口号。
 
 ### 如何构建生产版本？
 
